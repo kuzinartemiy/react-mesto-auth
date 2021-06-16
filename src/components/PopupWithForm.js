@@ -2,16 +2,15 @@ import React from 'react';
 
 
 function PopupWithForm (props) {
-  const state = {isOpen : props.isOpen}
-
+  
   const handleClick = () => {
     props.onClose();
   }
 
-  const className = `popup popup_type_${props.name} ${state.isOpen ? 'popup_opened' : '' } `;
+  const stateClassName = `popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : '' } `;
   
   return(
-    <div className={className}>
+    <div className={stateClassName}>
       <div className="popup__container">
         <form id="edit-form" name={props.name} action="#" className="popup__form" noValidate autoComplete="off">
           <button onClick={handleClick} id="edit-close-button" aria-label="Закрыть" type="button" className="popup__close-button"></button>
