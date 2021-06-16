@@ -4,12 +4,19 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 
 function App() {
   
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
+
+  const [selectedCard, setSelectedCard] = useState(false);
+
+  const handleCardClick = (targetCard) => {
+    setSelectedCard(targetCard);
+  }
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopup(true);
@@ -27,6 +34,7 @@ function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setAddPlacePopup(false);
+    setSelectedCard(false);
   }
 
   return(
@@ -36,6 +44,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onImage={handleCardClick}
       />
       <PopupWithForm 
         title='Редактировать профиль' 
@@ -68,6 +77,10 @@ function App() {
         <input required name="newCardLink" type="url" placeholder="Ссылка на новый аватар" className="popup__input popup__input_field_avatar-link"/>
         <span className="popup__input-error"/>
       </PopupWithForm>
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+       />
       <Footer />
     </div>
   )
