@@ -5,7 +5,6 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 
-
 function App() {
   
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
@@ -69,23 +68,7 @@ function App() {
         <input required name="newCardLink" type="url" placeholder="Ссылка на новый аватар" className="popup__input popup__input_field_avatar-link"/>
         <span className="popup__input-error"/>
       </PopupWithForm>
-      {/* <PopupWithForm title='Вы уверены?' name='delete-card' isOpen={isEditAvatarPopupOpen} /> */}
       <Footer />
-
-      {/* template */}
-      <template className="place__template">
-        <li className="place">
-          <button aria-label="Удалить" type="button" className="place__delete"></button>
-          <img src="#" alt="Фотография" className="place__image"/>
-          <div className="place__info">
-            <h2 className="place__title"></h2>
-            <div className="place__likes">
-              <button aria-label="Нравится" type="button" className="place__like"></button>
-              <span className="place__like-count"></span>
-            </div>
-          </div>
-        </li>
-      </template>
     </div>
   )
 }

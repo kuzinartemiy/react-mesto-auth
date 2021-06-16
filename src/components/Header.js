@@ -1,9 +1,9 @@
 function Header() {
-    return (
-      <header className="header">
-        <a href="#" target="_self" rel="noopener" className="header__logo"></a>
-      </header>
-    )
+  return (
+    <header className="header">
+      <a href="#" target="_self" rel="noopener" className="header__logo"/>
+    </header>
+  )
 }
 
 export default Header;

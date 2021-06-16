@@ -2,7 +2,6 @@ class Api {
   constructor({baseUrl, token}) {
     this._baseUrl = baseUrl;
     this._token = token;
-    this._headers = undefined;
   }
 
   getUserInfo() {
@@ -19,10 +18,26 @@ class Api {
     })
   }
 
+  getInitialCards() {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'GET',
+      headers: {
+        Authorization: this._token,
+      }
+    })
+      .then(res => {
+        if(res.ok) {
+          return res.json();
+        }
+      })
+  }
+
   editProfile({newName, newAbout}) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        Authorization: this._token,
+      },
       body: JSON.stringify({
         name: newName,
         about: newAbout
@@ -37,23 +52,12 @@ class Api {
       })
   }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      method: 'GET',
-      headers: this._headers
-    })
-      .then(res => {
-        if(res.ok) {
-          
-          return res.json();
-        }
-      })
-  }
-
   addCard({newCardName, newCardLink}) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        Authorization: this._token,
+      },
       body: JSON.stringify({
         name: newCardName,
         link: newCardLink
@@ -67,7 +71,9 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {
+        Authorization: this._token,
+      }
     })
       .then(res => {
         return res.json();
@@ -77,7 +83,9 @@ class Api {
   addLike(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method:'PUT',
-      headers: this._headers
+      headers: {
+        Authorization: this._token,
+      }
     })
       .then(res => {
         return res.json();
@@ -87,7 +95,9 @@ class Api {
   deleteLike(id) {
     return fetch(`${this._baseUrl}/cards/likes/${id}`, {
       method:'DELETE',
-      headers: this._headers
+      headers: {
+        Authorization: this._token,
+      }
     })
       .then(res => {
         return res.json();
