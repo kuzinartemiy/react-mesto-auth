@@ -31,15 +31,16 @@ class Api {
       .then(this._getResponceData);
   }
 
-  editProfile({newName, newAbout}) {
+  setUserInfo({name, about}) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        Authorization: this._token,
+        authorization: this._token,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: newName,
-        about: newAbout
+        name,
+        about
       })
     })
       .then(this._getResponceData);

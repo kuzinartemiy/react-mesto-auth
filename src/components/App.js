@@ -5,8 +5,9 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
 
-import {api} from '../utils/Api.js';
+import { api } from '../utils/Api.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -50,6 +51,15 @@ function App() {
     setSelectedCard(null);
   }
 
+  const handleUpdateUser = ({name, about}) => {
+    
+    api.setUserInfo({name, about})
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+  }
+
   return(
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -60,17 +70,11 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onImage={handleCardClick}
         />
-        <PopupWithForm 
-          title='Редактировать профиль' 
-          name='profile-edit' 
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input required name="inputName" type="text" placeholder="Имя" className="popup__input popup__input_field_name" minLength="2" maxLength="40"/>
-          <span className="popup__input-error"/>
-          <input required name="inputJob" type="text" placeholder="Вид деятельности" className="popup__input popup__input_field_job" minLength="2" maxLength="200"/>
-          <span className="popup__input-error"/>
-        </PopupWithForm>
+          onUpdateUser={handleUpdateUser}
+        />
         <PopupWithForm 
           title='Новое место' 
           name='add-card' 

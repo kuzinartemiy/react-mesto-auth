@@ -12,7 +12,7 @@ function PopupWithForm (props) {
   return(
     <div className={stateClassName}>
       <div className="popup__container">
-        <form id="edit-form" name={props.name} action="#" className="popup__form" noValidate autoComplete="off">
+        <form onSubmit={props.onSubmit} id="edit-form" name={props.name} action="#" className="popup__form" noValidate autoComplete="off">
           <button onClick={handleClick} id="edit-close-button" aria-label="Закрыть" type="button" className="popup__close-button"></button>
           <h2 className="popup__title">{props.title}</h2>
           {props.children}
