@@ -16,11 +16,11 @@ function EditProfilePopup(props) {
 
   const handleChangeName = (e) => {
     setName(e.target.value);
-  }
+  };
 
   const handleChangeDescription = (e) => {
     setDescription(e.target.value);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ function EditProfilePopup(props) {
       name : name,
       about: description
     });
-  }
+  };
 
   return (
     <PopupWithForm 
@@ -44,7 +44,7 @@ function EditProfilePopup(props) {
         <input value={description} onChange={handleChangeDescription} required name="inputJob" type="text" placeholder="Вид деятельности" className="popup__input popup__input_field_job" minLength="2" maxLength="200"/>
         <span className="popup__input-error"/>
     </PopupWithForm>
-  )
-}
+  );
+};
 
 export default EditProfilePopup;
