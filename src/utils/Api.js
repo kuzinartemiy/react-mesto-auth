@@ -4,7 +4,7 @@ class Api {
     this._token = token;
   }
 
-  _getResponceData(res) {
+  _getResponseData(res) {
     if(!res.ok) {
       return Promise.reject(`Ошибка: ${res.status}`);
     }
@@ -18,7 +18,7 @@ class Api {
         Authorization: this._token,
       }
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
   }
 
   getInitialCards() {
@@ -28,7 +28,7 @@ class Api {
         Authorization: this._token,
       }
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
   }
 
   setUserInfo({name, about}) {
@@ -43,7 +43,21 @@ class Api {
         about
       })
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
+  }
+
+  setUserAvatar({avatar}) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    })
+      .then(this._getResponseData);
   }
 
   addCard({newCardName, newCardLink}) {
@@ -57,7 +71,7 @@ class Api {
         link: newCardLink
       })
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
   }
 
   deleteCard(id) {
@@ -67,7 +81,7 @@ class Api {
         Authorization: this._token,
       }
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
   }
 
   changeLikeCardStatus(id, isLiked) {
@@ -77,7 +91,7 @@ class Api {
         Authorization: this._token,
       }
     })
-      .then(this._getResponceData);
+      .then(this._getResponseData);
   }
 }
 

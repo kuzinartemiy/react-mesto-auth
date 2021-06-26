@@ -6,6 +6,7 @@ import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 
 import { api } from '../utils/Api.js';
 
@@ -54,7 +55,15 @@ function App() {
   const handleUpdateUser = ({name, about}) => {
     
     api.setUserInfo({name, about})
-      .then((res) => {
+      .then(res => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+  }
+
+  const handleUpdateAvatar = ({avatar}) => {
+    api.setUserAvatar({avatar})
+      .then(res => {
         setCurrentUser(res);
         closeAllPopups();
       })
@@ -75,6 +84,11 @@ function App() {
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
+        <EditAvatarPopup
+         isOpen={isEditAvatarPopupOpen}
+         onClose={closeAllPopups}
+         onUpdateAvatar={handleUpdateAvatar}
+        />
         <PopupWithForm 
           title='Новое место' 
           name='add-card' 
@@ -84,15 +98,6 @@ function App() {
           <input required name="newCardName" type="text" placeholder="Название" className="popup__input popup__input_field_card-name" minLength="2" maxLength="30"/>
           <span className="popup__input-error"/>
           <input required name="newCardLink" type="url" placeholder="Ссылка на картинку" className="popup__input popup__input_field_card-link"/>
-          <span className="popup__input-error"/>
-        </PopupWithForm>
-        <PopupWithForm 
-          title='Обновить аватар' 
-          name='edit-avatar' 
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        >
-          <input required name="newCardLink" type="url" placeholder="Ссылка на новый аватар" className="popup__input popup__input_field_avatar-link"/>
           <span className="popup__input-error"/>
         </PopupWithForm>
         <ImagePopup
