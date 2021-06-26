@@ -31,6 +31,8 @@ function EditProfilePopup(props) {
     });
   };
 
+  const stateButtonValue = `${props.isLoading ? 'Сохранение...' : 'Сохранить'}`
+
   return (
     <PopupWithForm 
         title='Редактировать профиль' 
@@ -43,6 +45,7 @@ function EditProfilePopup(props) {
         <span className="popup__input-error"/>
         <input value={description} onChange={handleChangeDescription} required name="inputJob" type="text" placeholder="Вид деятельности" className="popup__input popup__input_field_job" minLength="2" maxLength="200"/>
         <span className="popup__input-error"/>
+        <button aria-label="Сохранить" type="submit" className="popup__save-button" id="edit-save-button">{stateButtonValue}</button>
     </PopupWithForm>
   );
 };

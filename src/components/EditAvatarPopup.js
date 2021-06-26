@@ -12,6 +12,8 @@ function EditAvatarPopup(props) {
       avatar: avatarLinkRef.current.value
     })
   }
+
+  const stateButtonValue = `${props.isLoading ? 'Сохранение...' : 'Сохранить'}`
   
   return(
     <PopupWithForm 
@@ -23,6 +25,7 @@ function EditAvatarPopup(props) {
     >
       <input ref={avatarLinkRef} required name="newCardLink" type="url" placeholder="Ссылка на новый аватар" className="popup__input popup__input_field_avatar-link"/>
       <span className="popup__input-error"/>
+      <button aria-label="Сохранить" type="submit" className="popup__save-button" id="save-button">{stateButtonValue}</button>
     </PopupWithForm>
   )
 }

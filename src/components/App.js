@@ -34,26 +34,11 @@ function App() {
     .then(([userData, cards]) => {
       setCurrentUser(userData);
       setCards(cards);
-      setIsLoading(false);
     })
     .catch(error => {
       console.log(`Ошибка при получении данных: ${error}`);
     })
   }, []);
-
-
-
-  // useEffect(() => {
-  //   api.getUserInfo()
-  //     .then(res => {
-  //       setCurrentUser(res);
-  //     })
-  //   api.getInitialCards()
-  //     .then(res => {
-  //       setCards(...cards, res);
-  //     })
-    
-  // }, []);
 
   const handleCardClick = (targetCard) => {
     setImagePopup(true);
@@ -87,18 +72,23 @@ function App() {
   };
 
   const handleUpdateUser = ({name, about}) => {
+    setIsLoading(true);
     api.setUserInfo({name, about})
       .then(res => {
         setCurrentUser(res);
         closeAllPopups();
+        setIsLoading(false);
       });
   };
 
   const handleUpdateAvatar = ({avatar}) => {
+    setIsLoading(true);
+
     api.setUserAvatar({avatar})
       .then(res => {
         setCurrentUser(res);
         closeAllPopups();
+        setIsLoading(false);
       });
   };
 
@@ -112,16 +102,24 @@ function App() {
   };
 
   const handleCardDelete = (card) => {
+    setIsLoading(true);
+
     api.deleteCard(card._id)
-      .then(setCards(cards.filter(i => i._id !== card._id)))
-      .then(closeAllPopups());
+      .then(() => {
+        setCards(cards.filter(i => i._id !== card._id));
+        closeAllPopups();
+        setIsLoading(false);
+      })
   };
 
   const handleAddPlaceSubmit = ({name, link}) => {
+    setIsLoading(true);
+
     api.addCard({name, link})
       .then(res => {
-        setCards([res, ...cards])
-        closeAllPopups()
+        setCards([res, ...cards]);
+        closeAllPopups();
+        setIsLoading(false);
       })
   };
   
@@ -130,7 +128,6 @@ function App() {
       <div className="page">
         <Header />
         <Main 
-          isLoading={isLoading}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -143,22 +140,26 @@ function App() {
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
         />
         <EditAvatarPopup
          isOpen={isEditAvatarPopupOpen}
          onClose={closeAllPopups}
          onUpdateAvatar={handleUpdateAvatar}
+         isLoading={isLoading}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
         />
         <DeleteCardPopup
           isOpen={isDeleteCardPopupOpen}
           onClose={closeAllPopups}
           onDeleteCard={handleCardDelete}
           card={selectedCard}
+          isLoading={isLoading}
         />
         <ImagePopup
           isOpen={isImagePopupOpen}

@@ -16,7 +16,6 @@ function PopupWithForm (props) {
           <button onClick={handleClick} id="edit-close-button" aria-label="Закрыть" type="button" className="popup__close-button"></button>
           <h2 className="popup__title">{props.title}</h2>
           {props.children}
-          <button aria-label="Сохранить" type="submit" className="popup__save-button" id="edit-save-button">Сохранить</button>
         </form>
       </div>
     </div>

@@ -23,6 +23,8 @@ function AddPlacePopup(props) {
     });
   };
 
+  const stateButtonValue = `${props.isLoading ? 'Добавление...' : 'Добавить'}`
+
   return (
     <PopupWithForm 
         title='Новое место' 
@@ -35,6 +37,7 @@ function AddPlacePopup(props) {
         <span className="popup__input-error"/>
         <input value={link} onChange={handleChangeLink} required name="newCardLink" type="url" placeholder="Ссылка на картинку" className="popup__input popup__input_field_card-link"/>
         <span className="popup__input-error"/>
+        <button aria-label="Сохранить" type="submit" className="popup__save-button" id="edit-save-button">{stateButtonValue}</button>
     </PopupWithForm>
   );
 };
