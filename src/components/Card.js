@@ -1,11 +1,9 @@
 import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-
-
-
 function Card(props) {
   const card = props.cardData;
+  console.log(card);
 
   const currentUser = useContext(CurrentUserContext);
 
@@ -13,12 +11,12 @@ function Card(props) {
     props.onCardClick(card);
   }
 
+  const handleDeleteClick = () => {
+    props.onCardDeleteClick(card);
+  }
+
   const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = `place__delete ${isOwn ? 'place__delete_active' : ''}`;
-  
-  const handleDeleteClick = () => {
-    props.onCardDelete(card);
-  }
 
   const isLiked = card.likes.some(i => i._id === currentUser._id);
   const cardLikeButtonClassName = `place__like ${isLiked ? 'place__like_active' : ''}`; 
@@ -26,9 +24,6 @@ function Card(props) {
   const handleLikeClick = () => {
     props.onCardLike(card);
   }
-
-
-
 
   return (
     <li className="place" key={props._id}>

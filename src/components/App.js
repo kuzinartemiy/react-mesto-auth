@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import DeleteCardPopup from './DeleteCardPopup';
 
 import { api } from '../utils/Api.js';
 
@@ -17,6 +18,10 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
+  const [isDeleteCardPopupOpen, setDeleteCardPopup] = useState(false);
+  const [isImagePopupOpen, setImagePopup] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [cards, setCards] = useState([]);
 
@@ -25,17 +30,38 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   
   useEffect(() => {
-    api.getUserInfo()
-      .then(res => {
-        setCurrentUser(res);
-      })
-    api.getInitialCards()
-      .then(res => {
-        setCards(...cards, res);
-      })
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([userData, cards]) => {
+      setCurrentUser(userData);
+      setCards(cards);
+      setIsLoading(false);
+    })
+    .catch(error => {
+      console.log(`Ошибка при получении данных: ${error}`);
+    })
   }, []);
 
+
+
+  // useEffect(() => {
+  //   api.getUserInfo()
+  //     .then(res => {
+  //       setCurrentUser(res);
+  //     })
+  //   api.getInitialCards()
+  //     .then(res => {
+  //       setCards(...cards, res);
+  //     })
+    
+  // }, []);
+
   const handleCardClick = (targetCard) => {
+    setImagePopup(true);
+    setSelectedCard(targetCard);
+  };
+
+  const handleDeleteCardClick = (targetCard) => {
+    setDeleteCardPopup(true);
     setSelectedCard(targetCard);
   };
 
@@ -55,6 +81,8 @@ function App() {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
     setAddPlacePopup(false);
+    setDeleteCardPopup(false);
+    setImagePopup(false);
     setSelectedCard(null);
   };
 
@@ -85,30 +113,31 @@ function App() {
 
   const handleCardDelete = (card) => {
     api.deleteCard(card._id)
-      .then(setCards(cards.filter(i => i._id !== card._id)));
+      .then(setCards(cards.filter(i => i._id !== card._id)))
+      .then(closeAllPopups());
   };
 
   const handleAddPlaceSubmit = ({name, link}) => {
-    console.log({name, link});
     api.addCard({name, link})
       .then(res => {
-        setCards([{name, link}, ...cards]);
-        closeAllPopups();
-      });
+        setCards([res, ...cards])
+        closeAllPopups()
+      })
   };
-
+  
   return(
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
         <Main 
+          isLoading={isLoading}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onImage={handleCardClick}
+          onCardDelete={handleDeleteCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
         />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -125,7 +154,14 @@ function App() {
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
         />
+        <DeleteCardPopup
+          isOpen={isDeleteCardPopupOpen}
+          onClose={closeAllPopups}
+          onDeleteCard={handleCardDelete}
+          card={selectedCard}
+        />
         <ImagePopup
+          isOpen={isImagePopupOpen}
           card={selectedCard}
           onClose={closeAllPopups}
         />

@@ -4,7 +4,7 @@ function ImagePopup(props) {
     props.onClose();
   }
 
-  const stateClassName = `popup ${props.card ? 'popup_opened' : '' } `;
+  const stateClassName = `popup ${props.isOpen ? 'popup_opened' : '' } `;
   const stateImgSrc = `${props.card ? props.card.link : '#' } `;
   const stateImgName = `${props.card ? props.card.name : '' } `;
 
