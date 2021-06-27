@@ -73,6 +73,7 @@ function App() {
 
   const handleUpdateUser = ({name, about}) => {
     setIsLoading(true);
+    
     api.setUserInfo({name, about})
       .then(res => {
         setCurrentUser(res);

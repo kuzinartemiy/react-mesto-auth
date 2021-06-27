@@ -3,7 +3,6 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card(props) {
   const card = props.cardData;
-  console.log(card);
 
   const currentUser = useContext(CurrentUserContext);
 
