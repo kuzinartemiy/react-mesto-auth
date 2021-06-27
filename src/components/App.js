@@ -9,7 +9,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import DeleteCardPopup from './DeleteCardPopup';
 
-import { api } from '../utils/Api.js';
+import { api } from '../utils/api.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -73,7 +73,7 @@ function App() {
 
   const handleUpdateUser = ({name, about}) => {
     setIsLoading(true);
-    
+
     api.setUserInfo({name, about})
       .then(res => {
         setCurrentUser(res);
