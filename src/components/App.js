@@ -9,7 +9,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import DeleteCardPopup from './DeleteCardPopup';
 
-import { api } from '../utils/api.js';
+import api from '../utils/api.js';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
