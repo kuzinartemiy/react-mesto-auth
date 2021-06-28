@@ -11,6 +11,7 @@ function EditAvatarPopup(props) {
     props.onUpdateAvatar({
       avatar: avatarLinkRef.current.value
     })
+    avatarLinkRef.current.value = '';
   }
 
   const stateButtonValue = `${props.isLoading ? 'Сохранение...' : 'Сохранить'}`
@@ -22,10 +23,10 @@ function EditAvatarPopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      buttonText={stateButtonValue}
     >
       <input ref={avatarLinkRef} required name="newCardLink" type="url" placeholder="Ссылка на новый аватар" className="popup__input popup__input_field_avatar-link"/>
       <span className="popup__input-error"/>
-      <button aria-label="Сохранить" type="submit" className="popup__save-button" id="save-button">{stateButtonValue}</button>
     </PopupWithForm>
   )
 }

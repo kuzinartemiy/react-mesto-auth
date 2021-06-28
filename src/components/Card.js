@@ -25,7 +25,7 @@ function Card(props) {
   }
 
   return (
-    <li className="place" key={props._id}>
+    <li className="place">
       <button onClick={handleDeleteClick} aria-label="Удалить" type="button" className={cardDeleteButtonClassName}></button>
       <img onClick={handleClick} src={card.link} alt={`Фотография ${card.name}`} className="place__image"/>
       <div className="place__info">

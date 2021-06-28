@@ -17,9 +17,8 @@ function DeleteCardPopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
-    >
-      <button aria-label="Удалить" type="submit" className="popup__save-button" id="edit-save-button">{stateButtonValue}</button>
-    </PopupWithForm>
+      buttonText={stateButtonValue}
+    />
   )
 }
 

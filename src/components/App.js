@@ -79,6 +79,9 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
         setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(`Ошибка при обновлении данных пользователя: ${error}`);
       });
   };
 
@@ -90,6 +93,9 @@ function App() {
         setCurrentUser(res);
         closeAllPopups();
         setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(`Ошибка при обновлении аватара: ${error}`);
       });
   };
 
@@ -99,6 +105,9 @@ function App() {
     api.changeLikeCardStatus(card._id, isLiked)
       .then(newCard => {
         setCards(state => state.map(c => c._id === card._id ? newCard : c));
+      })
+      .catch(error => {
+        console.log(`Ошибка при установке/удалении лайка: ${error}`);
       });
   };
 
@@ -111,6 +120,9 @@ function App() {
         closeAllPopups();
         setIsLoading(false);
       })
+      .catch(error => {
+        console.log(`Ошибка при удалении карточки: ${error}`);
+      });
   };
 
   const handleAddPlaceSubmit = ({name, link}) => {
@@ -122,6 +134,9 @@ function App() {
         closeAllPopups();
         setIsLoading(false);
       })
+      .catch(error => {
+        console.log(`Ошибка при добавлении новой карточки: ${error}`);
+      });
   };
   
   return(

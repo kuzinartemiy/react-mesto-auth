@@ -12,7 +12,7 @@ function EditProfilePopup(props) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, props.isOpen]);
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -40,12 +40,12 @@ function EditProfilePopup(props) {
         isOpen={props.isOpen}
         onClose={props.onClose}
         onSubmit={handleSubmit}
+        buttonText={stateButtonValue}
       >
-        <input value={name} onChange={handleChangeName} required name="inputName" type="text" placeholder="Имя" className="popup__input popup__input_field_name" minLength="2" maxLength="40"/>
+        <input value={name || ''} onChange={handleChangeName} required name="inputName" type="text" placeholder="Имя" className="popup__input popup__input_field_name" minLength="2" maxLength="40"/>
         <span className="popup__input-error"/>
-        <input value={description} onChange={handleChangeDescription} required name="inputJob" type="text" placeholder="Вид деятельности" className="popup__input popup__input_field_job" minLength="2" maxLength="200"/>
+        <input value={description || ''} onChange={handleChangeDescription} required name="inputJob" type="text" placeholder="Вид деятельности" className="popup__input popup__input_field_job" minLength="2" maxLength="200"/>
         <span className="popup__input-error"/>
-        <button aria-label="Сохранить" type="submit" className="popup__save-button" id="edit-save-button">{stateButtonValue}</button>
     </PopupWithForm>
   );
 };
