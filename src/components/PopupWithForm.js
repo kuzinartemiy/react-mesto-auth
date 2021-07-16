@@ -7,7 +7,7 @@ function PopupWithForm (props) {
     props.onClose();
   }
 
-  const stateClassName = `popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : '' } `;
+  const stateClassName = `popup ${props.isOpen ? 'popup_opened' : '' } `;
   
   return(
     <div className={stateClassName}>
