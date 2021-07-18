@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, Route } from 'react-router-dom';
 
-function Header(props) {
+function Header({ onSignOut, email }) {
 
-  const [isMenuOpened, setMenu] = useState(false);
+  const [isMenuOpened, setMenuOpen] = useState(false);
 
   const stateProfileClass = `header__profile ${isMenuOpened ? 'header__profile_opened' : ''}`;
   const stateMenuClass = `header__menu header__menu_type_${isMenuOpened ? 'close' : 'open'}`;
@@ -11,12 +11,12 @@ function Header(props) {
 
 
   const handleOpenMenu = () => {
-    setMenu(!isMenuOpened);
+    setMenuOpen(!isMenuOpened);
   }
 
   const handleSignOut = () => {
-    props.onSignOut();
-    setMenu(false);
+    onSignOut();
+    setMenuOpen(false);
   }
 
   return (
@@ -33,7 +33,7 @@ function Header(props) {
           <button className={stateMenuClass} onClick={handleOpenMenu}/>
           
           <div className={stateProfileClass}>
-            <p className="header__email">{props.email}</p>
+            <p className="header__email">{email}</p>
             <Link onClick={handleSignOut} to="sign-in" className="header__link">Выйти</Link>
           </div>
 

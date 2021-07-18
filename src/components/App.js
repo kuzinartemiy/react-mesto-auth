@@ -24,16 +24,18 @@ import ProtectedRoute from './ProtectedRoute';
 function App() {
 
   const history = useHistory();
+  const token = localStorage.getItem('token');
   
-  const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
-  const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
-  const [isDeleteCardPopupOpen, setDeleteCardPopup] = useState(false);
-  const [isImagePopupOpen, setImagePopup] = useState(false);
-  const [isInfoTooltipOpen, setInfoTooltip] = useState(false);
-  const [isSuccess, setSuccess] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isDeleteCardPopupOpen, setDeleteCardPopupOpen] = useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
-  
+  const infoTooltipTitle = `${isAuthSuccess ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз.'}`
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [cards, setCards] = useState([]);
@@ -44,13 +46,15 @@ function App() {
   const [email, setEmail] = useState('');
   
   useEffect(() => {
-    if(localStorage.getItem('token')) {
-      setLoggedIn(true);
-      auth.getUserData(localStorage.getItem('token'))
+    if(token) {
+      auth.getUserData(token)
         .then(res => {
           setEmail(res.data.email);
           setLoggedIn(true);
           history.push('/');
+        })
+        .catch(error => {
+          console.log(error);
         })
     }
 
@@ -65,34 +69,34 @@ function App() {
   }, []);
 
   const handleCardClick = (targetCard) => {
-    setImagePopup(true);
+    setImagePopupOpen(true);
     setSelectedCard(targetCard);
   };
 
   const handleDeleteCardClick = (targetCard) => {
-    setDeleteCardPopup(true);
+    setDeleteCardPopupOpen(true);
     setSelectedCard(targetCard);
   };
 
   const handleEditAvatarClick = () => {
-    setEditAvatarPopup(true);
+    setEditAvatarPopupOpen(true);
   };
 
   const handleEditProfileClick = () => {
-    setEditProfilePopup(true);
+    setEditProfilePopupOpen(true);
   };
 
   const handleAddPlaceClick = () => {
-    setAddPlacePopup(true);
+    setAddPlacePopupOpen(true);
   };
 
   const closeAllPopups = () => {
-    setEditAvatarPopup(false);
-    setEditProfilePopup(false);
-    setAddPlacePopup(false);
-    setDeleteCardPopup(false);
-    setImagePopup(false);
-    setInfoTooltip(false);
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setDeleteCardPopupOpen(false);
+    setImagePopupOpen(false);
+    setInfoTooltipOpen(false);
     setSelectedCard(null);
   };
 
@@ -103,11 +107,13 @@ function App() {
       .then(res => {
         setCurrentUser(res);
         closeAllPopups();
-        setIsLoading(false);
       })
       .catch(error => {
         console.log(`Ошибка при обновлении данных пользователя: ${error}`);
-      });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
 
   const handleUpdateAvatar = ({avatar}) => {
@@ -117,11 +123,13 @@ function App() {
       .then(res => {
         setCurrentUser(res);
         closeAllPopups();
-        setIsLoading(false);
       })
       .catch(error => {
         console.log(`Ошибка при обновлении аватара: ${error}`);
-      });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
 
   const handleCardLike = (card) => {
@@ -143,11 +151,13 @@ function App() {
       .then(() => {
         setCards(cards.filter(i => i._id !== card._id));
         closeAllPopups();
-        setIsLoading(false);
       })
       .catch(error => {
         console.log(`Ошибка при удалении карточки: ${error}`);
-      });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
 
   const handleAddPlaceSubmit = ({name, link}) => {
@@ -157,24 +167,27 @@ function App() {
       .then(res => {
         setCards([res, ...cards]);
         closeAllPopups();
-        setIsLoading(false);
       })
       .catch(error => {
         console.log(`Ошибка при добавлении новой карточки: ${error}`);
-      });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   };
   
   const handleRegister = (signUpData) => {
     auth.signUp(signUpData)
       .then(() => {
-        setSuccess(true);
-        setInfoTooltip(true);
+        setIsAuthSuccess(true);
         history.push('/sign-in');
       })
       .catch((error) => {
-        setSuccess(false);
-        setInfoTooltip(true);
+        setIsAuthSuccess(false);
         console.log(error);
+      })
+      .finally(() => {
+        setInfoTooltipOpen(true);
       })
   }
 
@@ -182,16 +195,13 @@ function App() {
     auth.signIn(signInData)
       .then(res => {
         localStorage.setItem('token',res.token);
-        auth.getUserData(localStorage.getItem('token'))
-          .then(res => {
-            setEmail(res.data.email);
-            setLoggedIn(true);
-            history.push('/');
-          })
+        setEmail(signInData.email);
+        setLoggedIn(true);
+        history.push('/')
       })
       .catch(error => {
-        setSuccess(false);
-        setInfoTooltip(true);
+        setIsAuthSuccess(false);
+        setInfoTooltipOpen(true);
         console.log(error);
       })
   }
@@ -238,7 +248,7 @@ function App() {
             onUpdateUser={handleUpdateUser}
             isLoading={isLoading}
           />
-          
+
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
@@ -270,7 +280,8 @@ function App() {
           <InfoTooltip
             isOpen={isInfoTooltipOpen}
             onClose={closeAllPopups}
-            isSuccess={isSuccess}
+            isAuthSuccess={isAuthSuccess}
+            title={infoTooltipTitle}
           />
 
           <Footer />

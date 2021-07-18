@@ -1,12 +1,12 @@
-function ImagePopup(props) {
+function ImagePopup({ card, isOpen, onClose }) {
 
   const handleClick = () => {
-    props.onClose();
+    onClose();
   }
 
-  const stateClassName = `popup ${props.isOpen ? 'popup_opened' : '' } `;
-  const stateImgSrc = `${props.card ? props.card.link : '#' } `;
-  const stateImgName = `${props.card ? props.card.name : '' } `;
+  const stateClassName = `popup ${isOpen ? 'popup_opened' : '' } `;
+  const stateImgSrc = `${card ? card.link : '#' } `;
+  const stateImgName = `${card ? card.name : '' } `;
 
   return(
     <div id="photo-popup" className={stateClassName}>
